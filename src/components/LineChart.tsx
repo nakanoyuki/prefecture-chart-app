@@ -7,6 +7,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -20,39 +21,49 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
+const options: ChartOptions<"line"> = {
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: "Chart.js Line Chart",
-    },
+    legend: { position: "top" },
+  },
+  scales: {
+    x: { title: { display: true, text: "年度" } },
+    y: { title: { display: true, text: "人口数" } },
   },
 };
 
-const labels = ["1980", "1990", "2000", "2010", "2020"];
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: [500000, 1000000, 1000000, 1200000, 1300000, 1400000],
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Dataset 2",
-      data: [500000, 800000, 500000, 1000000, 1300000, 900000],
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-  ],
+const lineChartStyle: React.CSSProperties = {
+  marginLeft: "auto",
+  marginRight: "auto",
+  margin: "20px auto 0",
+  width: "600px",
 };
 
-export const LineChart = () => {
-  return <Line options={options} data={data} />;
+type Props = {
+  population: {
+    year: number;
+    value: number;
+  }[];
+};
+
+export const LineChart = ({ population }: Props) => {
+  const labels = population.map((item) => item.year);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "北海道",
+        data: population.map((data) => data.value),
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
+  return (
+    <div style={lineChartStyle}>
+      <Line options={options} data={data} width={600} height={300} />
+    </div>
+  );
 };
