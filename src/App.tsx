@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { PrefecturesCheckbox } from "./components/PrefecturesCheckbox";
 import { fetchPrefectures } from "./lib/fetchPrefectures";
+import { LineChart } from "./components/LineChart";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -40,6 +41,7 @@ function App() {
           />
         ))}
       </div>
+      <LineChart />
     </>
   );
 }
