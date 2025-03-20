@@ -10,7 +10,7 @@ export type Prefecture = {
 
 export const fetchPrefectures = async (): Promise<Prefecture[]> => {
   try {
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(`${API_URL}/api/v1/prefectures`, {
       headers: {
         "X-API-KEY": API_KEY,
         "Content-Type": "application/json; charset=UTF-8",
