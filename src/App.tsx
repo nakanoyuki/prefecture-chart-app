@@ -3,29 +3,46 @@ import "./App.css";
 import { PrefecturesCheckbox } from "./components/PrefecturesCheckbox";
 import { fetchPrefectures } from "./lib/fetchPrefectures";
 import { LineChart } from "./components/LineChart";
+import { fetchPopulation, Population } from "./lib/fetchPopulation";
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [prefectures, setPrefectures] = useState<
     { prefCode: number; prefName: string }[]
   >([]);
+  const [population, setPopulation] = useState<Population[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const getPrefectures = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchPrefectures();
+  useEffect(() => {
+    const getPrefectures = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchPrefectures();
 
-      setPrefectures(data);
-      console.log(data);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setPrefectures(data);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getPrefectures();
+  }, []);
 
   useEffect(() => {
-    getPrefectures();
+    const getPopulation = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchPopulation();
+
+        setPopulation(data);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getPopulation();
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -41,7 +58,8 @@ function App() {
           />
         ))}
       </div>
-      <LineChart />
+
+      <LineChart population={population} />
     </>
   );
 }
