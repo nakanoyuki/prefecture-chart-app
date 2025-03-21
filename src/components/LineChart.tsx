@@ -10,6 +10,7 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { Population } from "../type/type";
 
 ChartJS.register(
   CategoryScale,
@@ -41,26 +42,23 @@ const lineChartStyle: React.CSSProperties = {
 };
 
 type Props = {
-  population: {
-    year: number;
-    value: number;
-  }[];
+  population: Population[][];
+  selectedPrefNames: string[];
 };
 
-export const LineChart = ({ population }: Props) => {
-  const labels = population.map((item) => item.year);
+export const LineChart = ({ population, selectedPrefNames }: Props) => {
+  // const labels = population?.map((item) => item.year) || [];
+  const labels = [1960, 1970, 1980, 1990, 2000, 2010, 2020, 2030];
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "北海道",
-        data: population.map((data) => data.value),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-    ],
-  };
+  const datasets = population.map((prefData, index) => ({
+    label: selectedPrefNames[index],
+    data: prefData.map((item) => item.value),
+    borderColor: `hsl(${(index * 40) % 360}, 70%, 50%)`, // 色を動的に変更
+    backgroundColor: `hsl(${(index * 40) % 360}, 70%, 70%)`,
+  }));
+
+  const data = { labels, datasets };
+
   return (
     <div style={lineChartStyle}>
       <Line options={options} data={data} width={600} height={300} />

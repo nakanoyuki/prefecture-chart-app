@@ -1,12 +1,8 @@
 import axios from "axios";
+import { Prefecture } from "../type/type";
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const API_KEY = import.meta.env.VITE_API_KEY as string;
-
-export type Prefecture = {
-  prefCode: number;
-  prefName: string;
-};
 
 export const fetchPrefectures = async (): Promise<Prefecture[]> => {
   try {
