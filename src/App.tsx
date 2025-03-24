@@ -6,6 +6,12 @@ import { LineChart } from "./components/LineChart";
 import { fetchPopulation } from "./lib/fetchPopulation";
 import { Population } from "./type/type";
 
+const PrefecturesCheckboxStyle: React.CSSProperties = {
+  textAlign: "left",
+  width: "600px",
+  margin: "auto",
+};
+
 function App() {
   const [loading, setLoading] = useState(false);
   const [prefectures, setPrefectures] = useState<
@@ -61,13 +67,13 @@ function App() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
-  const selectedPrefNames = prefectures
-    .filter((pref) => selectedPrefCodes.includes(pref.prefCode))
-    .map((pref) => pref.prefName);
+  const selectedPrefNames = selectedPrefCodes.map(
+    (code) => prefectures.find((pref) => pref.prefCode === code)?.prefName || ""
+  );
 
   return (
     <>
-      <div>
+      <div style={PrefecturesCheckboxStyle}>
         {prefectures.map((prefecture) => (
           <PrefecturesCheckbox
             key={prefecture.prefCode}
@@ -76,11 +82,12 @@ function App() {
             handlePrefectureChange={handlePrefectureChange}
           />
         ))}
+
+        <LineChart
+          population={population}
+          selectedPrefNames={selectedPrefNames}
+        />
       </div>
-      <LineChart
-        population={population}
-        selectedPrefNames={selectedPrefNames}
-      />
     </>
   );
 }

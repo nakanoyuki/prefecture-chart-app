@@ -6,11 +6,7 @@ type Props = {
   handlePrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
-const PrefecturesCheckboxStyle: React.CSSProperties = {
-  textAlign: "left",
-  width: "600px",
-  margin: "auto",
-};
+
 
 export const PrefecturesCheckbox = ({
   prefName,
@@ -26,7 +22,7 @@ export const PrefecturesCheckbox = ({
   };
 
   return (
-    <label style={PrefecturesCheckboxStyle}>
+    <label >
       <input
         type="checkbox"
         value={prefName}

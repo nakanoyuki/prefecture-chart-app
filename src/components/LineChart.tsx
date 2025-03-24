@@ -37,8 +37,7 @@ const options: ChartOptions<"line"> = {
 const lineChartStyle: React.CSSProperties = {
   marginLeft: "auto",
   marginRight: "auto",
-  margin: "20px auto 0",
-  width: "600px",
+  marginTop: "20px",
 };
 
 type Props = {
@@ -47,16 +46,26 @@ type Props = {
 };
 
 export const LineChart = ({ population, selectedPrefNames }: Props) => {
-  // const labels = population?.map((item) => item.year) || [];
-  const labels = [1960, 1970, 1980, 1990, 2000, 2010, 2020, 2030];
+  const labels =
+    population.length > 0
+      ? population[0].map((item) => item.year)
+      : Array.from({ length: 10 }, (_, i) => 1960 + i * 10); // 1960, 1970, ... をデフォルトとする
 
-  const datasets = population.map((prefData, index) => ({
-    label: selectedPrefNames[index],
-    data: prefData.map((item) => item.value),
-    borderColor: `hsl(${(index * 40) % 360}, 70%, 50%)`, // 色を動的に変更
-    backgroundColor: `hsl(${(index * 40) % 360}, 70%, 70%)`,
-  }));
+  // デフォルトの人口データ（labels の長さに合わせる）
+  const defaultValues = labels.map((_, i) => i * 2000000); // 0, 200万, 400万, ...
 
+  const datasets = selectedPrefNames.map((name, index) => {
+    const prefData = population[index] || []; // population[index] が存在しない場合は空配列
+    return {
+      label: name,
+      data:
+        prefData.length > 0
+          ? prefData.map((item) => item.value)
+          : defaultValues,
+      borderColor: `hsl(${(index * 40) % 360}, 70%, 50%)`,
+      backgroundColor: `hsl(${(index * 40) % 360}, 70%, 70%)`,
+    };
+  });
   const data = { labels, datasets };
 
   return (

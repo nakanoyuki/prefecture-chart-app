@@ -17,9 +17,11 @@ export const fetchPopulation = async (
         },
       }
     );
-
-    const populationData = response.data.result.data[0].data;
-
+    const currentYear = new Date().getFullYear();
+    const populationData = response.data.result.data[0].data.filter(
+      (item: Population) => item.year <= currentYear
+    );
+    console.log(populationData);
     return populationData;
   } catch (error) {
     console.error("人口データ取得エラー:", error);
