@@ -4,7 +4,8 @@ import { PrefecturesCheckbox } from "./components/PrefecturesCheckbox";
 import { fetchPrefectures } from "./lib/fetchPrefectures";
 import { LineChart } from "./components/LineChart";
 import { fetchPopulation } from "./lib/fetchPopulation";
-import { Population } from "./type/type";
+import { Population, Prefecture } from "./type/type";
+import { Loading } from "./components/Loading";
 
 const PrefecturesCheckboxStyle: React.CSSProperties = {
   textAlign: "left",
@@ -14,9 +15,7 @@ const PrefecturesCheckboxStyle: React.CSSProperties = {
 
 function App() {
   const [loading, setLoading] = useState(false);
-  const [prefectures, setPrefectures] = useState<
-    { prefCode: number; prefName: string }[]
-  >([]);
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefCodes, setSelectedPrefCodes] = useState<number[]>([]);
   const [population, setPopulation] = useState<Population[][]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +49,7 @@ function App() {
     }
 
     const getPopulation = async () => {
+      setLoading(true);
       setError(null);
       try {
         const data = await Promise.all(
@@ -64,7 +64,6 @@ function App() {
     getPopulation();
   }, [selectedPrefCodes]);
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   const selectedPrefNames = selectedPrefCodes.map(
@@ -83,10 +82,14 @@ function App() {
           />
         ))}
 
-        <LineChart
-          population={population}
-          selectedPrefNames={selectedPrefNames}
-        />
+        {loading ? (
+          <Loading />
+        ) : (
+          <LineChart
+            population={population}
+            selectedPrefNames={selectedPrefNames}
+          />
+        )}
       </div>
     </>
   );
