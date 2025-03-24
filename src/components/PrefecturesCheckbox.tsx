@@ -6,8 +6,6 @@ type Props = {
   handlePrefectureChange: (prefCode: number, checked: boolean) => void;
 };
 
-
-
 export const PrefecturesCheckbox = ({
   prefName,
   prefCode,
@@ -22,7 +20,7 @@ export const PrefecturesCheckbox = ({
   };
 
   return (
-    <label >
+    <label>
       <input
         type="checkbox"
         value={prefName}

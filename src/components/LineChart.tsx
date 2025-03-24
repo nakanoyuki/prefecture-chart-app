@@ -49,13 +49,12 @@ export const LineChart = ({ population, selectedPrefNames }: Props) => {
   const labels =
     population.length > 0
       ? population[0].map((item) => item.year)
-      : Array.from({ length: 10 }, (_, i) => 1960 + i * 10); // 1960, 1970, ... をデフォルトとする
+      : Array.from({ length: 10 }, (_, i) => 1960 + i * 10);
 
-  // デフォルトの人口データ（labels の長さに合わせる）
-  const defaultValues = labels.map((_, i) => i * 2000000); // 0, 200万, 400万, ...
+  const defaultValues = labels.map((_, i) => i * 2000000);
 
   const datasets = selectedPrefNames.map((name, index) => {
-    const prefData = population[index] || []; // population[index] が存在しない場合は空配列
+    const prefData = population[index] || [];
     return {
       label: name,
       data:
