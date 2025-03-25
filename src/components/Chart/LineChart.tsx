@@ -10,7 +10,7 @@ import {
   ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Population } from "../type/type";
+import { Population } from "../../type/type";
 
 ChartJS.register(
   CategoryScale,
