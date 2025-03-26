@@ -7,7 +7,7 @@ import {
   useEffect,
 } from "react";
 import { Prefecture } from "../type/type";
-import { fetchPrefectures } from "../lib/fetchPrefectures";
+import { getPrefectures } from "../lib/getPrefectures";
 
 type PrefectureContextType = {
   selectedPrefCodes: number[];
@@ -32,12 +32,7 @@ export const PrefectureProvider = ({ children }: { children: ReactNode }) => {
   const [selectedPrefCodes, setSelectedPrefCodes] = useState<number[]>([]);
 
   useEffect(() => {
-    const getPrefectures = async () => {
-      const data = await fetchPrefectures();
-      setPrefectures(data);
-    };
-
-    getPrefectures();
+    getPrefectures(setPrefectures);
   }, []);
 
   const togglePrefecture = (prefCode: number) => {

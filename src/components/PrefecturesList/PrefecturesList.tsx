@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { Loading } from "../Loading";
-import { fetchPrefectures } from "../../lib/fetchPrefectures";
 import { PrefecturesCheckbox } from "./PrefecturesCheckbox";
 import { Prefecture } from "../../type/type";
+import { getPrefectures } from "../../lib/getPrefectures";
 
 const PrefecturesCheckboxStyle: React.CSSProperties = {
   textAlign: "left",
@@ -13,22 +13,11 @@ const PrefecturesCheckboxStyle: React.CSSProperties = {
 
 export const PrefecturesList = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading] = useState(false);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
-    const getPrefectures = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await fetchPrefectures();
-        setPrefectures(data);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getPrefectures();
+    getPrefectures(setPrefectures);
   }, []);
 
   if (loading) return <Loading />;
